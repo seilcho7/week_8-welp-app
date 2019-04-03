@@ -33,7 +33,12 @@ app.get('/login', (req, res) => {
 app.post('/login', (req, res) => { 
     console.log(req.body.email);
     console.log(req.body.password);
-    res.send('no soup for you');
+    // res.send('no soup for you');
+    res.redirect('/dashboard');
+});
+
+app.get('/dashboard', (req, res) => {
+    res.send('Welcome to your welp dashboard');
 });
 
 // Import my model class
