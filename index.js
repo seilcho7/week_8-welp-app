@@ -19,12 +19,22 @@ app.set('view engine', 'html');
 // Tell express where to find the view files (The second argument is the name of the directory where my template files will live.)
 app.set('views', 'views');
 
+// Configure express to use the built-in middleware
+// that can deal with the form data.
+app.use(express.urlencoded({ extended: true }));
+
 // When they ask for the login page, send the login form
 app.get('/login', (req, res) => {
     // send them the form.
     res.render('login_form');
 });
 
+// When they submit the form, process the form data.
+app.post('/login', (req, res) => { 
+    console.log(req.body.email);
+    console.log(req.body.password);
+    res.send('no soup for you');
+});
 
 // Import my model class
 const Restaurant = require('./models/restaurants');
@@ -47,8 +57,6 @@ const server = http.createServer(async (req, res) => {
         const restaurantJSON = JSON.stringify(allRestaurants);    
         res.end(restaurantJSON);
     } else if (req.url.startsWith("/users")) {   
-
-        
         const parts = req.url.split("/");
         console.log(parts);
         // when the req.url is "/users", parts is [ '', 'users' ]
