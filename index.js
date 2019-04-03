@@ -1,8 +1,30 @@
+// Bring in the express library.
+const express = require('express');
+const app = express();
+const es6Renderer = require('express-es6-template-engine');
+
+// Create a new express app.
 const http = require('http');
 const querystring = require('querystring');
 
-const hostname = '127.0.0.1';
+// const hostname = '127.0.0.1';
 const port = 3000;
+
+// Introduce them: "hey app, meet es6Renderer, they speak html."
+app.engine('html', es6Renderer); 
+
+// Tell express to use as its view engine the thing that speaks html
+app.set('view engine', 'html');
+
+// Tell express where to find the view files (The second argument is the name of the directory where my template files will live.)
+app.set('views', 'views');
+
+// When they ask for the login page, send the login form
+app.get('/login', (req, res) => {
+    // send them the form.
+    res.render('login_form');
+});
+
 
 // Import my model class
 const Restaurant = require('./models/restaurants');
@@ -87,6 +109,6 @@ const server = http.createServer(async (req, res) => {
     }
 });
 
-server.listen(port, hostname, () => {
-    console.log(`Server is running at http://${hostname}:${port}`);
+app.listen(port, () => {
+    console.log(`Server is running at ${port}`);
 });
